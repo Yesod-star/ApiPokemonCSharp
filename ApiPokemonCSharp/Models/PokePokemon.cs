@@ -4,12 +4,6 @@ namespace ApiPokemonCSharp.Models;
 
 public class PokePokemon : BaseModel
 {
-    public PokemonType PokemonPrimaryType { get; set; }
-
-    public PokemonType PokemonSecondaryType { get; set; }
-
-    public PokeItem? PokeItem { get; set; }
-
     public int HpPokemon {  get; set; }
 
     public int AttackPokemon { get; set; }
@@ -21,7 +15,18 @@ public class PokePokemon : BaseModel
     public int SpecialAttackPokemon { get; set; }
 
     public int SpecialDefensePokemon { get; set; }
+    public int PokeItemId { get; set; }
 
-    public List<PokeMove>? PokeMoveList { get; set; }
+    public PokeItem? PokeItem { get; set; }
+
+    public int PokeTypePrimaryId { get; set; }
+
+    public virtual PokeType? PokePrimaryType { get; set; }
+
+    public int? PokeTypeSecondaryId { get; set; }
+
+    public virtual PokeType? PokeSecondaryType { get; set; }
+
+    public List<PokePokemonMove>? PokePokemonMoveList { get; set; }
 }
 

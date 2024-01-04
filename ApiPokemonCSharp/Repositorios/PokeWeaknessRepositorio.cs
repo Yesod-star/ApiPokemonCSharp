@@ -1,33 +1,73 @@
-﻿using ApiPokemonCSharp.Models;
+﻿using ApiPokemonCSharp.Data;
+using ApiPokemonCSharp.Models;
 using ApiPokemonCSharp.Repositorios.Repositorios;
+using Microsoft.EntityFrameworkCore;
 
 namespace ApiPokemonCSharp.Repositorios;
 
 public class PokeWeaknessRepositorio : IPokeWeaknessRepositorio
 {
-    public Task<PokeType> Adicionar(PokeType TVmEntity)
+
+    private readonly PokemonDbContext _dbContext;
+
+    public PokeWeaknessRepositorio(PokemonDbContext sistemaTarefasDbContext)
     {
-        throw new NotImplementedException();
+        _dbContext = sistemaTarefasDbContext;
     }
 
-    public Task<bool> Apagar(int id)
+    public async Task<PokeWeakness> Adicionar(PokeWeakness TVmEntity)
     {
-        throw new NotImplementedException();
+        await _dbContext.Weakness.AddAsync(TVmEntity);
+        await _dbContext.SaveChangesAsync();
+
+        return TVmEntity;
     }
 
-    public Task<PokeType> Atualizar(PokeType TVmEntity, int id)
+    public async Task<bool> Apagar(int id)
     {
-        throw new NotImplementedException();
+        PokeWeakness PokeWeaknessId = await BuscarPorId(id);
+
+        if (PokeWeaknessId != null)
+        {
+            throw new Exception($"Weakness for Id: {id} was not found");
+        }
+
+        _dbContext.Weakness.Remove(PokeWeaknessId);
+        await _dbContext.SaveChangesAsync();
+        return true;
     }
 
-    public Task<PokeType> BuscarPorId(int id)
+    public async Task<PokeWeakness> Atualizar(PokeWeakness TVmEntity, int id)
     {
-        throw new NotImplementedException();
+        PokeWeakness PokeWeaknessId = await BuscarPorId(id);
+
+        if (PokeWeaknessId == null)
+        {
+            throw new Exception($"Weakness for Id: {id} was not found");
+        }
+
+        PokeWeaknessId.Name = TVmEntity.Name;
+        PokeWeaknessId.Deleted = TVmEntity.Deleted;
+        PokeWeaknessId.DeletedWhen = TVmEntity.DeletedWhen;
+        PokeWeaknessId.Id = TVmEntity.Id;
+        PokeWeaknessId.PokeTypeId = TVmEntity.PokeTypeId;
+        PokeWeaknessId.PokeType = TVmEntity.PokeType;
+        PokeWeaknessId.Multiplier = TVmEntity.Multiplier;
+
+        _dbContext.Weakness.Update(PokeWeaknessId);
+        await _dbContext.SaveChangesAsync();
+
+        return PokeWeaknessId;
     }
 
-    public Task<List<PokeType>> BuscarTodos()
+    public async Task<PokeWeakness> BuscarPorId(int id)
     {
-        throw new NotImplementedException();
+        return await _dbContext.Weakness.FirstOrDefaultAsync(x => x.Id == id);
+    }
+
+    public async Task<List<PokeWeakness>> BuscarTodos()
+    {
+        return await _dbContext.Weakness.ToListAsync();
     }
 }
 

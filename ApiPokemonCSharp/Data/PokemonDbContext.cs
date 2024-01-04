@@ -18,6 +18,7 @@ namespace ApiPokemonCSharp.Data
         public DbSet<PokePokemon> Pokemons { get; set; }
         public DbSet<PokeType> Types { get; set; }
         public DbSet<PokeWeakness> Weakness { get; set; }
+        public DbSet<PokePokemonMove> PokemonMove { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
@@ -27,6 +28,7 @@ namespace ApiPokemonCSharp.Data
             modelBuilder.ApplyConfiguration(new PokePokemonMap());
             modelBuilder.ApplyConfiguration(new PokeTypeMap());
             modelBuilder.ApplyConfiguration(new PokeWeaknessMap());
+            modelBuilder.ApplyConfiguration(new PokePokemonMoveMap());
             base.OnModelCreating(modelBuilder);
         }
     }

@@ -42,14 +42,15 @@ public class PokeEffectiveRepositorio : IPokeEffectiveRepositorio
 
         if (PokeEffectiveId == null)
         {
-            throw new Exception($"Tarefa para o Id: {id} nao foi encontrado no banco de dados");
+            throw new Exception($"Effectiveness for Id: {id} was not found");
         }
 
         PokeEffectiveId.Name = TVmEntity.Name;
         PokeEffectiveId.Deleted = TVmEntity.Deleted;
         PokeEffectiveId.DeletedWhen = TVmEntity.DeletedWhen;
         PokeEffectiveId.Id = TVmEntity.Id;
-        PokeEffectiveId.PokemonType = TVmEntity.PokemonType;
+        PokeEffectiveId.PokeTypeId = TVmEntity.PokeTypeId;
+        PokeEffectiveId.PokeType = TVmEntity.PokeType;
         PokeEffectiveId.Multiplier = TVmEntity.Multiplier;
 
         _dbContext.Effectiveness.Update(PokeEffectiveId);

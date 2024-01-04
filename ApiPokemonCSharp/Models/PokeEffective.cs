@@ -4,8 +4,11 @@ namespace ApiPokemonCSharp.Models;
 
 public class PokeEffective : BaseModel
 {
-    public PokemonType PokemonType { get; set; }
-
     public int Multiplier { get; set; }
+
+    public int PokeTypeId { get; set; }
+
+    public virtual PokeType? PokeType { get; set; }
+
 }
 

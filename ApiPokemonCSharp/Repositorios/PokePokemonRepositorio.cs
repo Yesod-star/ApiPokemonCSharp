@@ -1,32 +1,81 @@
-﻿using ApiPokemonCSharp.Models;
+﻿using ApiPokemonCSharp.Data;
+using ApiPokemonCSharp.Models;
 using ApiPokemonCSharp.Repositorios.Repositorios;
+using Microsoft.EntityFrameworkCore;
 
 namespace ApiPokemonCSharp.Repositorios;
 
 public class PokePokemonRepositorio : IPokePokemonRepositorio
 {
-    public Task<PokePokemon> Adicionar(PokePokemon TVmEntity)
+    private readonly PokemonDbContext _dbContext;
+
+    public PokePokemonRepositorio(PokemonDbContext sistemaTarefasDbContext)
     {
-        throw new NotImplementedException();
+        _dbContext = sistemaTarefasDbContext;
     }
 
-    public Task<bool> Apagar(int id)
+    public async Task<PokePokemon> Adicionar(PokePokemon TVmEntity)
     {
-        throw new NotImplementedException();
+        await _dbContext.Pokemons.AddAsync(TVmEntity);
+        await _dbContext.SaveChangesAsync();
+
+        return TVmEntity;
     }
 
-    public Task<PokePokemon> Atualizar(PokePokemon TVmEntity, int id)
+    public async Task<bool> Apagar(int id)
     {
-        throw new NotImplementedException();
+        PokePokemon PokePokemonId = await BuscarPorId(id);
+
+        if (PokePokemonId != null)
+        {
+            throw new Exception($"Pokemon for Id: {id} was not found");
+        }
+
+        _dbContext.Pokemons.Remove(PokePokemonId);
+        await _dbContext.SaveChangesAsync();
+        return true;
     }
 
-    public Task<PokePokemon> BuscarPorId(int id)
+    public async Task<PokePokemon> Atualizar(PokePokemon TVmEntity, int id)
     {
-        throw new NotImplementedException();
+        PokePokemon PokePokemonId = await BuscarPorId(id);
+
+        if (PokePokemonId == null)
+        {
+            throw new Exception($"Pokemon for Id: {id} was not found");
+        }
+
+        PokePokemonId.Name = TVmEntity.Name;
+        PokePokemonId.Deleted = TVmEntity.Deleted;
+        PokePokemonId.DeletedWhen = TVmEntity.DeletedWhen;
+        PokePokemonId.Id = TVmEntity.Id;
+        PokePokemonId.SpeedPokemon  = TVmEntity.SpeedPokemon;
+        PokePokemonId.HpPokemon = TVmEntity.HpPokemon;
+        PokePokemonId.AttackPokemon = TVmEntity.AttackPokemon;
+        PokePokemonId.DefensePokemon = TVmEntity.DefensePokemon;
+        PokePokemonId.PokeItem = TVmEntity.PokeItem;
+        PokePokemonId.PokeItemId = TVmEntity.PokeItemId;
+        PokePokemonId.PokePokemonMoveList = TVmEntity.PokePokemonMoveList;
+        PokePokemonId.PokePrimaryType = TVmEntity.PokePrimaryType;
+        PokePokemonId.PokeTypePrimaryId = TVmEntity.PokeTypePrimaryId;
+        PokePokemonId.PokeSecondaryType = TVmEntity.PokeSecondaryType;
+        PokePokemonId.PokeTypeSecondaryId = TVmEntity.PokeTypeSecondaryId;
+        PokePokemonId.SpecialAttackPokemon = TVmEntity.SpecialAttackPokemon;
+        PokePokemonId.SpecialDefensePokemon = TVmEntity.SpecialDefensePokemon;
+
+        _dbContext.Pokemons.Update(PokePokemonId);
+        await _dbContext.SaveChangesAsync();
+
+        return PokePokemonId;
     }
 
-    public Task<List<PokePokemon>> BuscarTodos()
+    public async Task<PokePokemon> BuscarPorId(int id)
     {
-        throw new NotImplementedException();
+        return await _dbContext.Pokemons.FirstOrDefaultAsync(x => x.Id == id);
+    }
+
+    public async Task<List<PokePokemon>> BuscarTodos()
+    {
+        return await _dbContext.Pokemons.ToListAsync();
     }
 }

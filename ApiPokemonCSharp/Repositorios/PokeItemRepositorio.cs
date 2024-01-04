@@ -1,32 +1,71 @@
-﻿using ApiPokemonCSharp.Models;
+﻿using ApiPokemonCSharp.Data;
+using ApiPokemonCSharp.Models;
 using ApiPokemonCSharp.Repositorios.Repositorios;
+using Microsoft.EntityFrameworkCore;
 
 namespace ApiPokemonCSharp.Repositorios;
 
 public class PokeItemRepositorio : IPokeItemRepositorio
 {
-    public Task<PokeItem> Adicionar(PokeItem TVmEntity)
+    private readonly PokemonDbContext _dbContext;
+
+    public PokeItemRepositorio(PokemonDbContext sistemaTarefasDbContext)
     {
-        throw new NotImplementedException();
+        _dbContext = sistemaTarefasDbContext;
     }
 
-    public Task<bool> Apagar(int id)
+    public async Task<PokeItem> Adicionar(PokeItem TVmEntity)
     {
-        throw new NotImplementedException();
+        await _dbContext.Items.AddAsync(TVmEntity);
+        await _dbContext.SaveChangesAsync();
+
+        return TVmEntity;
     }
 
-    public Task<PokeItem> Atualizar(PokeItem TVmEntity, int id)
+    public async Task<bool> Apagar(int id)
     {
-        throw new NotImplementedException();
+        PokeItem PokeItemId = await BuscarPorId(id);
+
+        if (PokeItemId != null)
+        {
+            throw new Exception($"Item for Id: {id} was not found");
+        }
+
+        _dbContext.Items.Remove(PokeItemId);
+        await _dbContext.SaveChangesAsync();
+        return true;
     }
 
-    public Task<PokeItem> BuscarPorId(int id)
+    public async Task<PokeItem> Atualizar(PokeItem TVmEntity, int id)
     {
-        throw new NotImplementedException();
+        PokeItem PokeItemId = await BuscarPorId(id);
+
+        if (PokeItemId == null)
+        {
+            throw new Exception($"Item for Id: {id} was not found");
+        }
+
+        PokeItemId.Name = TVmEntity.Name;
+        PokeItemId.Deleted = TVmEntity.Deleted;
+        PokeItemId.DeletedWhen = TVmEntity.DeletedWhen;
+        PokeItemId.Id = TVmEntity.Id;
+        PokeItemId.AttributeBuff = TVmEntity.AttributeBuff;
+        PokeItemId.IncreaseBuff = TVmEntity.IncreaseBuff;
+        PokeItemId.Price = TVmEntity.Price;
+
+        _dbContext.Items.Update(PokeItemId);
+        await _dbContext.SaveChangesAsync();
+
+        return PokeItemId;
     }
 
-    public Task<List<PokeItem>> BuscarTodos()
+    public async Task<PokeItem> BuscarPorId(int id)
     {
-        throw new NotImplementedException();
+        return await _dbContext.Items.FirstOrDefaultAsync(x => x.Id == id);
+    }
+
+    public async Task<List<PokeItem>> BuscarTodos()
+    {
+        return await _dbContext.Items.ToListAsync();
     }
 }

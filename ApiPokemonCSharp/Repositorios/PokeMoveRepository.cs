@@ -5,17 +5,17 @@ using Microsoft.EntityFrameworkCore;
 
 namespace ApiPokemonCSharp.Repositorios;
 
-public class PokeMoveRepositorio : IPokeMoveRepositorio
+public class PokeMoveRepository : IPokeMoveRepository
 {
 
     private readonly PokemonDbContext _dbContext;
 
-    public PokeMoveRepositorio(PokemonDbContext sistemaTarefasDbContext)
+    public PokeMoveRepository(PokemonDbContext sistemaTarefasDbContext)
     {
         _dbContext = sistemaTarefasDbContext;
     }
 
-    public async Task<PokeMove> Adicionar(PokeMove TVmEntity)
+    public async Task<PokeMove> AddItem(PokeMove TVmEntity)
     {
         await _dbContext.Moves.AddAsync(TVmEntity);
         await _dbContext.SaveChangesAsync();
@@ -23,9 +23,9 @@ public class PokeMoveRepositorio : IPokeMoveRepositorio
         return TVmEntity;
     }
 
-    public async Task<bool> Apagar(int id)
+    public async Task<bool> RemoveItem(int id)
     {
-        PokeMove PokeMoveId = await BuscarPorId(id);
+        PokeMove PokeMoveId = await SearchForId(id);
 
         if (PokeMoveId != null)
         {
@@ -37,9 +37,9 @@ public class PokeMoveRepositorio : IPokeMoveRepositorio
         return true;
     }
 
-    public async Task<PokeMove> Atualizar(PokeMove TVmEntity, int id)
+    public async Task<PokeMove> UpdateItem(PokeMove TVmEntity, int id)
     {
-        PokeMove PokeMoveId = await BuscarPorId(id);
+        PokeMove PokeMoveId = await SearchForId(id);
 
         if (PokeMoveId == null)
         {
@@ -68,12 +68,12 @@ public class PokeMoveRepositorio : IPokeMoveRepositorio
         return PokeMoveId;
     }
 
-    public async Task<PokeMove> BuscarPorId(int id)
+    public async Task<PokeMove> SearchForId(int id)
     {
         return await _dbContext.Moves.FirstOrDefaultAsync(x => x.Id == id);
     }
 
-    public async Task<List<PokeMove>> BuscarTodos()
+    public async Task<List<PokeMove>> SearchAll()
     {
         return await _dbContext.Moves.ToListAsync();
     }

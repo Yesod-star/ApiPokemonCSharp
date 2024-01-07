@@ -5,16 +5,16 @@ using Microsoft.EntityFrameworkCore;
 
 namespace ApiPokemonCSharp.Repositorios;
 
-public class PokeItemRepositorio : IPokeItemRepositorio
+public class PokeItemRepository : IPokeItemRepository
 {
     private readonly PokemonDbContext _dbContext;
 
-    public PokeItemRepositorio(PokemonDbContext sistemaTarefasDbContext)
+    public PokeItemRepository(PokemonDbContext sistemaTarefasDbContext)
     {
         _dbContext = sistemaTarefasDbContext;
     }
 
-    public async Task<PokeItem> Adicionar(PokeItem TVmEntity)
+    public async Task<PokeItem> AddItem(PokeItem TVmEntity)
     {
         await _dbContext.Items.AddAsync(TVmEntity);
         await _dbContext.SaveChangesAsync();
@@ -22,9 +22,9 @@ public class PokeItemRepositorio : IPokeItemRepositorio
         return TVmEntity;
     }
 
-    public async Task<bool> Apagar(int id)
+    public async Task<bool> RemoveItem(int id)
     {
-        PokeItem PokeItemId = await BuscarPorId(id);
+        PokeItem PokeItemId = await SearchForId(id);
 
         if (PokeItemId != null)
         {
@@ -36,9 +36,9 @@ public class PokeItemRepositorio : IPokeItemRepositorio
         return true;
     }
 
-    public async Task<PokeItem> Atualizar(PokeItem TVmEntity, int id)
+    public async Task<PokeItem> UpdateItem(PokeItem TVmEntity, int id)
     {
-        PokeItem PokeItemId = await BuscarPorId(id);
+        PokeItem PokeItemId = await SearchForId(id);
 
         if (PokeItemId == null)
         {
@@ -59,12 +59,12 @@ public class PokeItemRepositorio : IPokeItemRepositorio
         return PokeItemId;
     }
 
-    public async Task<PokeItem> BuscarPorId(int id)
+    public async Task<PokeItem> SearchForId(int id)
     {
         return await _dbContext.Items.FirstOrDefaultAsync(x => x.Id == id);
     }
 
-    public async Task<List<PokeItem>> BuscarTodos()
+    public async Task<List<PokeItem>> SearchAll()
     {
         return await _dbContext.Items.ToListAsync();
     }

@@ -1,5 +1,5 @@
 ﻿
-using static ApiPokemonCSharp.Enums.TiposGlobais;
+using static ApiPokemonCSharp.Enums.GlobalTypes;
 
 namespace ApiPokemonCSharp.Models;
 

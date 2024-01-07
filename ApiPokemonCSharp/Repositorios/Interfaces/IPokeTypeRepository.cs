@@ -2,8 +2,7 @@
 
 namespace ApiPokemonCSharp.Repositorios.Repositorios;
 
-public interface IPokeWeaknessRepositorio : IBaseRepositorio<PokeWeakness>
+public interface IPokeTypeRepository : IBaseRepository<PokeType>
 {
 
 }
-

@@ -5,17 +5,17 @@ using Microsoft.EntityFrameworkCore;
 
 namespace ApiPokemonCSharp.Repositorios;
 
-public class PokeWeaknessRepositorio : IPokeWeaknessRepositorio
+public class PokeWeaknessRepository : IPokeWeaknessRepository
 {
 
     private readonly PokemonDbContext _dbContext;
 
-    public PokeWeaknessRepositorio(PokemonDbContext sistemaTarefasDbContext)
+    public PokeWeaknessRepository(PokemonDbContext sistemaTarefasDbContext)
     {
         _dbContext = sistemaTarefasDbContext;
     }
 
-    public async Task<PokeWeakness> Adicionar(PokeWeakness TVmEntity)
+    public async Task<PokeWeakness> AddItem(PokeWeakness TVmEntity)
     {
         await _dbContext.Weakness.AddAsync(TVmEntity);
         await _dbContext.SaveChangesAsync();
@@ -23,9 +23,9 @@ public class PokeWeaknessRepositorio : IPokeWeaknessRepositorio
         return TVmEntity;
     }
 
-    public async Task<bool> Apagar(int id)
+    public async Task<bool> RemoveItem(int id)
     {
-        PokeWeakness PokeWeaknessId = await BuscarPorId(id);
+        PokeWeakness PokeWeaknessId = await SearchForId(id);
 
         if (PokeWeaknessId != null)
         {
@@ -37,9 +37,9 @@ public class PokeWeaknessRepositorio : IPokeWeaknessRepositorio
         return true;
     }
 
-    public async Task<PokeWeakness> Atualizar(PokeWeakness TVmEntity, int id)
+    public async Task<PokeWeakness> UpdateItem(PokeWeakness TVmEntity, int id)
     {
-        PokeWeakness PokeWeaknessId = await BuscarPorId(id);
+        PokeWeakness PokeWeaknessId = await SearchForId(id);
 
         if (PokeWeaknessId == null)
         {
@@ -60,12 +60,12 @@ public class PokeWeaknessRepositorio : IPokeWeaknessRepositorio
         return PokeWeaknessId;
     }
 
-    public async Task<PokeWeakness> BuscarPorId(int id)
+    public async Task<PokeWeakness> SearchForId(int id)
     {
         return await _dbContext.Weakness.FirstOrDefaultAsync(x => x.Id == id);
     }
 
-    public async Task<List<PokeWeakness>> BuscarTodos()
+    public async Task<List<PokeWeakness>> SearchAll()
     {
         return await _dbContext.Weakness.ToListAsync();
     }

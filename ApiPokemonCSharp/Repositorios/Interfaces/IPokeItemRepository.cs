@@ -2,8 +2,7 @@
 
 namespace ApiPokemonCSharp.Repositorios.Repositorios;
 
-public interface IPokePokemonMoveRepositorio : IBaseRepositorio<PokePokemonMove>
+public interface IPokeItemRepository : IBaseRepository<PokeItem>
 {
 
 }
-

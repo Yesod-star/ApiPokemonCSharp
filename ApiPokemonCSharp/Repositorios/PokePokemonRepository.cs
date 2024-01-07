@@ -5,16 +5,16 @@ using Microsoft.EntityFrameworkCore;
 
 namespace ApiPokemonCSharp.Repositorios;
 
-public class PokePokemonRepositorio : IPokePokemonRepositorio
+public class PokePokemonRepository : IPokePokemonRepository
 {
     private readonly PokemonDbContext _dbContext;
 
-    public PokePokemonRepositorio(PokemonDbContext sistemaTarefasDbContext)
+    public PokePokemonRepository(PokemonDbContext sistemaTarefasDbContext)
     {
         _dbContext = sistemaTarefasDbContext;
     }
 
-    public async Task<PokePokemon> Adicionar(PokePokemon TVmEntity)
+    public async Task<PokePokemon> AddItem(PokePokemon TVmEntity)
     {
         await _dbContext.Pokemons.AddAsync(TVmEntity);
         await _dbContext.SaveChangesAsync();
@@ -22,9 +22,9 @@ public class PokePokemonRepositorio : IPokePokemonRepositorio
         return TVmEntity;
     }
 
-    public async Task<bool> Apagar(int id)
+    public async Task<bool> RemoveItem(int id)
     {
-        PokePokemon PokePokemonId = await BuscarPorId(id);
+        PokePokemon PokePokemonId = await SearchForId(id);
 
         if (PokePokemonId != null)
         {
@@ -36,9 +36,9 @@ public class PokePokemonRepositorio : IPokePokemonRepositorio
         return true;
     }
 
-    public async Task<PokePokemon> Atualizar(PokePokemon TVmEntity, int id)
+    public async Task<PokePokemon> UpdateItem(PokePokemon TVmEntity, int id)
     {
-        PokePokemon PokePokemonId = await BuscarPorId(id);
+        PokePokemon PokePokemonId = await SearchForId(id);
 
         if (PokePokemonId == null)
         {
@@ -69,12 +69,12 @@ public class PokePokemonRepositorio : IPokePokemonRepositorio
         return PokePokemonId;
     }
 
-    public async Task<PokePokemon> BuscarPorId(int id)
+    public async Task<PokePokemon> SearchForId(int id)
     {
         return await _dbContext.Pokemons.FirstOrDefaultAsync(x => x.Id == id);
     }
 
-    public async Task<List<PokePokemon>> BuscarTodos()
+    public async Task<List<PokePokemon>> SearchAll()
     {
         return await _dbContext.Pokemons.ToListAsync();
     }

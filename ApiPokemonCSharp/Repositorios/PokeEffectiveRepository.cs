@@ -5,16 +5,16 @@ using Microsoft.EntityFrameworkCore;
 
 namespace ApiPokemonCSharp.Repositorios;
 
-public class PokeEffectiveRepositorio : IPokeEffectiveRepositorio
+public class PokeEffectiveRepository : IPokeEffectiveRepository
 {
     private readonly PokemonDbContext _dbContext;
 
-    public PokeEffectiveRepositorio(PokemonDbContext sistemaTarefasDbContext)
+    public PokeEffectiveRepository(PokemonDbContext sistemaTarefasDbContext)
     {
         _dbContext = sistemaTarefasDbContext;
     }
 
-    public async Task<PokeEffective> Adicionar(PokeEffective TVmEntity)
+    public async Task<PokeEffective> AddItem(PokeEffective TVmEntity)
     {
         await _dbContext.Effectiveness.AddAsync(TVmEntity);
         await _dbContext.SaveChangesAsync();
@@ -22,9 +22,9 @@ public class PokeEffectiveRepositorio : IPokeEffectiveRepositorio
         return TVmEntity;
     }
 
-    public async Task<bool> Apagar(int id)
+    public async Task<bool> RemoveItem(int id)
     {
-        PokeEffective pokeEffectiveId = await BuscarPorId(id);
+        PokeEffective pokeEffectiveId = await SearchForId(id);
 
         if (pokeEffectiveId != null)
         {
@@ -36,9 +36,9 @@ public class PokeEffectiveRepositorio : IPokeEffectiveRepositorio
         return true;
     }
 
-    public async Task<PokeEffective> Atualizar(PokeEffective TVmEntity, int id)
+    public async Task<PokeEffective> UpdateItem(PokeEffective TVmEntity, int id)
     {
-        PokeEffective PokeEffectiveId = await BuscarPorId(id);
+        PokeEffective PokeEffectiveId = await SearchForId(id);
 
         if (PokeEffectiveId == null)
         {
@@ -59,12 +59,12 @@ public class PokeEffectiveRepositorio : IPokeEffectiveRepositorio
         return PokeEffectiveId;
     }
 
-    public async Task<PokeEffective> BuscarPorId(int id)
+    public async Task<PokeEffective> SearchForId(int id)
     {
         return await _dbContext.Effectiveness.FirstOrDefaultAsync(x => x.Id == id);
     }
 
-    public async Task<List<PokeEffective>> BuscarTodos()
+    public async Task<List<PokeEffective>> SearchAll()
     {
         return await _dbContext.Effectiveness.ToListAsync();
     }

@@ -5,17 +5,17 @@ using Microsoft.EntityFrameworkCore;
 
 namespace ApiPokemonCSharp.Repositorios;
 
-public class PokeTypeRepositorio : IPokeTypeRepositorio
+public class PokeTypeRepository : IPokeTypeRepository
 {
 
     private readonly PokemonDbContext _dbContext;
 
-    public PokeTypeRepositorio(PokemonDbContext sistemaTarefasDbContext)
+    public PokeTypeRepository(PokemonDbContext sistemaTarefasDbContext)
     {
         _dbContext = sistemaTarefasDbContext;
     }
 
-    public async Task<PokeType> Adicionar(PokeType TVmEntity)
+    public async Task<PokeType> AddItem(PokeType TVmEntity)
     {
         await _dbContext.Types.AddAsync(TVmEntity);
         await _dbContext.SaveChangesAsync();
@@ -23,9 +23,9 @@ public class PokeTypeRepositorio : IPokeTypeRepositorio
         return TVmEntity;
     }
 
-    public async Task<bool> Apagar(int id)
+    public async Task<bool> RemoveItem(int id)
     {
-        PokeType PokeTypeId = await BuscarPorId(id);
+        PokeType PokeTypeId = await SearchForId(id);
 
         if (PokeTypeId != null)
         {
@@ -37,9 +37,9 @@ public class PokeTypeRepositorio : IPokeTypeRepositorio
         return true;
     }
 
-    public async Task<PokeType> Atualizar(PokeType TVmEntity, int id)
+    public async Task<PokeType> UpdateItem(PokeType TVmEntity, int id)
     {
-        PokeType PokeTypeId = await BuscarPorId(id);
+        PokeType PokeTypeId = await SearchForId(id);
 
         if (PokeTypeId == null)
         {
@@ -60,12 +60,12 @@ public class PokeTypeRepositorio : IPokeTypeRepositorio
         return PokeTypeId;
     }
 
-    public async Task<PokeType> BuscarPorId(int id)
+    public async Task<PokeType> SearchForId(int id)
     {
         return await _dbContext.Types.FirstOrDefaultAsync(x => x.Id == id);
     }
 
-    public async Task<List<PokeType>> BuscarTodos()
+    public async Task<List<PokeType>> SearchAll()
     {
         return await _dbContext.Types.ToListAsync();
     }

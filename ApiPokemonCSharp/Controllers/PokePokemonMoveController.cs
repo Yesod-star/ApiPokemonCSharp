@@ -1,55 +1,53 @@
 ﻿using ApiPokemonCSharp.Models;
 using ApiPokemonCSharp.Repositorios.Repositorios;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
-namespace ApiPokemonCSharp.Controllers
+namespace ApiPokemonCSharp.Controllers;
+
+[Route("api/[controller]")]
+[ApiController]
+public class PokePokemonMoveController : ControllerBase
 {
-    [Route("api/[controller]")]
-    [ApiController]
-    public class PokePokemonMoveController : ControllerBase
+    private readonly IPokePokemonMoveRepository _pokePokemonMoveRepositorio;
+
+    public PokePokemonMoveController(IPokePokemonMoveRepository pokePokemonMoveRepositorio)
     {
-        private readonly IPokePokemonMoveRepositorio _pokePokemonMoveRepositorio;
+        _pokePokemonMoveRepositorio = pokePokemonMoveRepositorio;
+    }
 
-        public PokePokemonMoveController(IPokePokemonMoveRepositorio pokePokemonMoveRepositorio)
-        {
-            _pokePokemonMoveRepositorio = pokePokemonMoveRepositorio;
-        }
+    [HttpGet]
+    public async Task<ActionResult<List<PokePokemonMove>>> SearchAll()
+    {
+        List<PokePokemonMove> tarefas = await _pokePokemonMoveRepositorio.SearchAll();
+        return Ok(tarefas);
+    }
 
-        [HttpGet]
-        public async Task<ActionResult<List<PokePokemonMove>>> BuscarTodasTarefas()
-        {
-            List<PokePokemonMove> tarefas = await _pokePokemonMoveRepositorio.BuscarTodos();
-            return Ok(tarefas);
-        }
+    [HttpGet("{id}")]
+    public async Task<ActionResult<PokePokemonMove>> SearchForId(int id)
+    {
+        PokePokemonMove tarefa = await _pokePokemonMoveRepositorio.SearchForId(id);
+        return Ok(tarefa);
+    }
 
-        [HttpGet("{id}")]
-        public async Task<ActionResult<PokePokemonMove>> BuscarPorId(int id)
-        {
-            PokePokemonMove tarefa = await _pokePokemonMoveRepositorio.BuscarPorId(id);
-            return Ok(tarefa);
-        }
+    [HttpPost]
+    public async Task<ActionResult<PokePokemonMove>> AddItem([FromBody] PokePokemonMove PokePokemonMove)
+    {
+        PokePokemonMove tarefa = await _pokePokemonMoveRepositorio.AddItem(PokePokemonMove);
+        return Ok(tarefa);
+    }
 
-        [HttpPost]
-        public async Task<ActionResult<PokePokemonMove>> Cadastrar([FromBody] PokePokemonMove PokePokemonMove)
-        {
-            PokePokemonMove tarefa = await _pokePokemonMoveRepositorio.Adicionar(PokePokemonMove);
-            return Ok(tarefa);
-        }
+    [HttpPut("{id}")]
+    public async Task<ActionResult<PokePokemonMove>> UpdateItem([FromBody] PokePokemonMove PokePokemonMove, int id)
+    {
+        PokePokemonMove.Id = id;
+        PokePokemonMove tarefa = await _pokePokemonMoveRepositorio.UpdateItem(PokePokemonMove, id);
+        return Ok(tarefa);
+    }
 
-        [HttpPut("{id}")]
-        public async Task<ActionResult<PokePokemonMove>> Atualizar([FromBody] PokePokemonMove PokePokemonMove, int id)
-        {
-            PokePokemonMove.Id = id;
-            PokePokemonMove tarefa = await _pokePokemonMoveRepositorio.Atualizar(PokePokemonMove, id);
-            return Ok(tarefa);
-        }
-
-        [HttpDelete("{id}")]
-        public async Task<ActionResult<PokePokemonMove>> Apagar(int id)
-        {
-            bool apagado = await _pokePokemonMoveRepositorio.Apagar(id);
-            return Ok(apagado);
-        }
+    [HttpDelete("{id}")]
+    public async Task<ActionResult<PokePokemonMove>> RemoveItem(int id)
+    {
+        bool apagado = await _pokePokemonMoveRepositorio.RemoveItem(id);
+        return Ok(apagado);
     }
 }

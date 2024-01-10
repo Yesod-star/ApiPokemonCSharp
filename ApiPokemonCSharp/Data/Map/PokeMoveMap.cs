@@ -23,10 +23,5 @@ public class PokeMoveMap : IEntityTypeConfiguration<PokeMove>
         builder.Property(x => x.PokeTypeId);
 
         builder.HasOne(x => x.PokeType);
-
-        builder.HasMany(x => x.PokePokemonMoveList)
-            .WithOne()
-            .HasForeignKey("PokeMoveId")
-            .OnDelete(DeleteBehavior.Cascade);
     }
 }

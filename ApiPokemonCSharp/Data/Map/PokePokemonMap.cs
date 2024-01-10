@@ -19,19 +19,14 @@ namespace ApiPokemonCSharp.Data.Map
             builder.Property(x => x.SpecialAttackPokemon).IsRequired();
             builder.Property(x => x.SpecialDefensePokemon).IsRequired();
             builder.Property(x => x.PokeItemId).IsRequired();
-            builder.Property(x => x.PokeTypePrimaryId).IsRequired();
-            builder.Property(x => x.PokeTypeSecondaryId);
+            builder.Property(x => x.PokePrimaryTypeId).IsRequired();
+            builder.Property(x => x.PokeSecondaryTypeId);
 
             builder.HasOne(x => x.PokeItem);
 
             builder.HasOne(x => x.PokePrimaryType);
 
             builder.HasOne(x => x.PokeSecondaryType);
-
-            builder.HasMany(x => x.PokePokemonMoveList)
-                .WithOne()
-                .HasForeignKey("PokePokemonId")
-                .OnDelete(DeleteBehavior.Cascade);
         }
     }
 }

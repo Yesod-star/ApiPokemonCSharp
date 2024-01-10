@@ -51,8 +51,6 @@ public class PokeTypeRepository : IPokeTypeRepository
         PokeTypeId.DeletedWhen = TVmEntity.DeletedWhen;
         PokeTypeId.Id = TVmEntity.Id;
         PokeTypeId.PokemonType = TVmEntity.PokemonType;
-        PokeTypeId.PokeEffectiveList = TVmEntity.PokeEffectiveList;
-        PokeTypeId.PokeWeaknessList = TVmEntity.PokeWeaknessList;
 
         _dbContext.Types.Update(PokeTypeId);
         await _dbContext.SaveChangesAsync();

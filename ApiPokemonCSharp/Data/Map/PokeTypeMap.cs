@@ -13,15 +13,5 @@ public class PokeTypeMap : IEntityTypeConfiguration<PokeType>
         builder.Property(x => x.Deleted);
         builder.Property(x => x.DeletedWhen);
         builder.Property(x => x.PokemonType).IsRequired();
-
-        builder.HasMany(x => x.PokeWeaknessList)
-            .WithOne()
-            .HasForeignKey("PokeTypeId")
-            .OnDelete(DeleteBehavior.Cascade);
-
-        builder.HasMany(x => x.PokeEffectiveList)
-            .WithOne() 
-            .HasForeignKey("PokeTypeId") 
-            .OnDelete(DeleteBehavior.Cascade);
     }
 }

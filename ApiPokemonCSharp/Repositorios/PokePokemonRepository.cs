@@ -57,9 +57,9 @@ public class PokePokemonRepository : IPokePokemonRepository
         PokePokemonId.PokeItemId = TVmEntity.PokeItemId;
         PokePokemonId.PokePokemonMoveList = TVmEntity.PokePokemonMoveList;
         PokePokemonId.PokePrimaryType = TVmEntity.PokePrimaryType;
-        PokePokemonId.PokeTypePrimaryId = TVmEntity.PokeTypePrimaryId;
+        PokePokemonId.PokePrimaryTypeId = TVmEntity.PokePrimaryTypeId;
         PokePokemonId.PokeSecondaryType = TVmEntity.PokeSecondaryType;
-        PokePokemonId.PokeTypeSecondaryId = TVmEntity.PokeTypeSecondaryId;
+        PokePokemonId.PokeSecondaryTypeId = TVmEntity.PokeSecondaryTypeId;
         PokePokemonId.SpecialAttackPokemon = TVmEntity.SpecialAttackPokemon;
         PokePokemonId.SpecialDefensePokemon = TVmEntity.SpecialDefensePokemon;
 

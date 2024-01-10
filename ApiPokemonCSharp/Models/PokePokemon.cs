@@ -19,11 +19,11 @@ public class PokePokemon : BaseModel
 
     public PokeItem? PokeItem { get; set; }
 
-    public int PokeTypePrimaryId { get; set; }
+    public int PokePrimaryTypeId { get; set; }
 
     public virtual PokeType? PokePrimaryType { get; set; }
 
-    public int? PokeTypeSecondaryId { get; set; }
+    public int? PokeSecondaryTypeId { get; set; }
 
     public virtual PokeType? PokeSecondaryType { get; set; }
 

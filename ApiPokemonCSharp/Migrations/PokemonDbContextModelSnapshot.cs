@@ -49,7 +49,7 @@ namespace ApiPokemonCSharp.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("PokeTypeId");
+                    b.HasIndex(new[] { "PokeTypeId" }, "idx_fk_poke_type_x_poke_effective");
 
                     b.ToTable("Effectiveness");
                 });
@@ -135,7 +135,7 @@ namespace ApiPokemonCSharp.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("PokeTypeId");
+                    b.HasIndex(new[] { "PokeTypeId" }, "idx_fk_poke_type_x_poke_move");
 
                     b.ToTable("Moves");
                 });
@@ -188,11 +188,11 @@ namespace ApiPokemonCSharp.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("PokeItemId");
+                    b.HasIndex(new[] { "PokeItemId" }, "idx_fk_poke_item_x_poke_pokemon");
 
-                    b.HasIndex("PokePrimaryTypeId");
+                    b.HasIndex(new[] { "PokePrimaryTypeId" }, "idx_fk_poke_primary_type_x_poke_pokemon");
 
-                    b.HasIndex("PokeSecondaryTypeId");
+                    b.HasIndex(new[] { "PokeSecondaryTypeId" }, "idx_fk_poke_secondary_type_x_poke_pokemon");
 
                     b.ToTable("Pokemons");
                 });
@@ -224,9 +224,9 @@ namespace ApiPokemonCSharp.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("PokeMoveId");
+                    b.HasIndex(new[] { "PokeMoveId" }, "idx_fk_poke_move_x_poke_pokemon_move");
 
-                    b.HasIndex("PokePokemonId");
+                    b.HasIndex(new[] { "PokePokemonId" }, "idx_fk_poke_pokemon_x_poke_pokemon_move");
 
                     b.ToTable("PokemonMove");
                 });
@@ -285,7 +285,7 @@ namespace ApiPokemonCSharp.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("PokeTypeId");
+                    b.HasIndex(new[] { "PokeTypeId" }, "idx_fk_poke_type_x_poke_weakness");
 
                     b.ToTable("Weakness");
                 });
@@ -293,10 +293,11 @@ namespace ApiPokemonCSharp.Migrations
             modelBuilder.Entity("ApiPokemonCSharp.Models.PokeEffective", b =>
                 {
                     b.HasOne("ApiPokemonCSharp.Models.PokeType", "PokeType")
-                        .WithMany()
+                        .WithMany("PokeEffectiveList")
                         .HasForeignKey("PokeTypeId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired()
+                        .HasConstraintName("fk_poke_type_x_poke_effective");
 
                     b.Navigation("PokeType");
                 });
@@ -304,10 +305,11 @@ namespace ApiPokemonCSharp.Migrations
             modelBuilder.Entity("ApiPokemonCSharp.Models.PokeMove", b =>
                 {
                     b.HasOne("ApiPokemonCSharp.Models.PokeType", "PokeType")
-                        .WithMany()
+                        .WithMany("PokeMoveList")
                         .HasForeignKey("PokeTypeId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired()
+                        .HasConstraintName("fk_poke_type_x_poke_move");
 
                     b.Navigation("PokeType");
                 });
@@ -315,20 +317,24 @@ namespace ApiPokemonCSharp.Migrations
             modelBuilder.Entity("ApiPokemonCSharp.Models.PokePokemon", b =>
                 {
                     b.HasOne("ApiPokemonCSharp.Models.PokeItem", "PokeItem")
-                        .WithMany()
+                        .WithMany("PokeList")
                         .HasForeignKey("PokeItemId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired()
+                        .HasConstraintName("fk_poke_item_x_poke_pokemon");
 
                     b.HasOne("ApiPokemonCSharp.Models.PokeType", "PokePrimaryType")
-                        .WithMany()
+                        .WithMany("PokePrimaryList")
                         .HasForeignKey("PokePrimaryTypeId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired()
+                        .HasConstraintName("fk_poke_primary_type_x_poke_pokemon");
 
                     b.HasOne("ApiPokemonCSharp.Models.PokeType", "PokeSecondaryType")
-                        .WithMany()
-                        .HasForeignKey("PokeSecondaryTypeId");
+                        .WithMany("PokeSecondaryList")
+                        .HasForeignKey("PokeSecondaryTypeId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .HasConstraintName("fk_poke_secondary_type_x_poke_pokemon");
 
                     b.Navigation("PokeItem");
 
@@ -342,14 +348,16 @@ namespace ApiPokemonCSharp.Migrations
                     b.HasOne("ApiPokemonCSharp.Models.PokeMove", "PokeMove")
                         .WithMany("PokePokemonMoveList")
                         .HasForeignKey("PokeMoveId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired()
+                        .HasConstraintName("fk_poke_move_x_poke_pokemon_move");
 
                     b.HasOne("ApiPokemonCSharp.Models.PokePokemon", "PokePokemon")
                         .WithMany("PokePokemonMoveList")
                         .HasForeignKey("PokePokemonId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired()
+                        .HasConstraintName("fk_poke_pokemon_x_poke_pokemon_move");
 
                     b.Navigation("PokeMove");
 
@@ -359,12 +367,18 @@ namespace ApiPokemonCSharp.Migrations
             modelBuilder.Entity("ApiPokemonCSharp.Models.PokeWeakness", b =>
                 {
                     b.HasOne("ApiPokemonCSharp.Models.PokeType", "PokeType")
-                        .WithMany()
+                        .WithMany("PokeWeaknessList")
                         .HasForeignKey("PokeTypeId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired()
+                        .HasConstraintName("fk_poke_type_x_poke_weakness");
 
                     b.Navigation("PokeType");
+                });
+
+            modelBuilder.Entity("ApiPokemonCSharp.Models.PokeItem", b =>
+                {
+                    b.Navigation("PokeList");
                 });
 
             modelBuilder.Entity("ApiPokemonCSharp.Models.PokeMove", b =>
@@ -375,6 +389,19 @@ namespace ApiPokemonCSharp.Migrations
             modelBuilder.Entity("ApiPokemonCSharp.Models.PokePokemon", b =>
                 {
                     b.Navigation("PokePokemonMoveList");
+                });
+
+            modelBuilder.Entity("ApiPokemonCSharp.Models.PokeType", b =>
+                {
+                    b.Navigation("PokeEffectiveList");
+
+                    b.Navigation("PokeMoveList");
+
+                    b.Navigation("PokePrimaryList");
+
+                    b.Navigation("PokeSecondaryList");
+
+                    b.Navigation("PokeWeaknessList");
                 });
 #pragma warning restore 612, 618
         }

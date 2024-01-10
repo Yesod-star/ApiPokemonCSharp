@@ -61,11 +61,11 @@ namespace ApiPokemonCSharp.Migrations
                 {
                     table.PrimaryKey("PK_Effectiveness", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_Effectiveness_Types_PokeTypeId",
+                        name: "fk_poke_type_x_poke_effective",
                         column: x => x.PokeTypeId,
                         principalTable: "Types",
                         principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
+                        onDelete: ReferentialAction.Restrict);
                 });
 
             migrationBuilder.CreateTable(
@@ -91,11 +91,11 @@ namespace ApiPokemonCSharp.Migrations
                 {
                     table.PrimaryKey("PK_Moves", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_Moves_Types_PokeTypeId",
+                        name: "fk_poke_type_x_poke_move",
                         column: x => x.PokeTypeId,
                         principalTable: "Types",
                         principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
+                        onDelete: ReferentialAction.Restrict);
                 });
 
             migrationBuilder.CreateTable(
@@ -121,22 +121,23 @@ namespace ApiPokemonCSharp.Migrations
                 {
                     table.PrimaryKey("PK_Pokemons", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_Pokemons_Items_PokeItemId",
+                        name: "fk_poke_item_x_poke_pokemon",
                         column: x => x.PokeItemId,
                         principalTable: "Items",
                         principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
+                        onDelete: ReferentialAction.Restrict);
                     table.ForeignKey(
-                        name: "FK_Pokemons_Types_PokePrimaryTypeId",
+                        name: "fk_poke_primary_type_x_poke_pokemon",
                         column: x => x.PokePrimaryTypeId,
                         principalTable: "Types",
                         principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
+                        onDelete: ReferentialAction.Restrict);
                     table.ForeignKey(
-                        name: "FK_Pokemons_Types_PokeSecondaryTypeId",
+                        name: "fk_poke_secondary_type_x_poke_pokemon",
                         column: x => x.PokeSecondaryTypeId,
                         principalTable: "Types",
-                        principalColumn: "Id");
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Restrict);
                 });
 
             migrationBuilder.CreateTable(
@@ -155,11 +156,11 @@ namespace ApiPokemonCSharp.Migrations
                 {
                     table.PrimaryKey("PK_Weakness", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_Weakness_Types_PokeTypeId",
+                        name: "fk_poke_type_x_poke_weakness",
                         column: x => x.PokeTypeId,
                         principalTable: "Types",
                         principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
+                        onDelete: ReferentialAction.Restrict);
                 });
 
             migrationBuilder.CreateTable(
@@ -178,56 +179,56 @@ namespace ApiPokemonCSharp.Migrations
                 {
                     table.PrimaryKey("PK_PokemonMove", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_PokemonMove_Moves_PokeMoveId",
+                        name: "fk_poke_move_x_poke_pokemon_move",
                         column: x => x.PokeMoveId,
                         principalTable: "Moves",
                         principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
+                        onDelete: ReferentialAction.Restrict);
                     table.ForeignKey(
-                        name: "FK_PokemonMove_Pokemons_PokePokemonId",
+                        name: "fk_poke_pokemon_x_poke_pokemon_move",
                         column: x => x.PokePokemonId,
                         principalTable: "Pokemons",
                         principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
+                        onDelete: ReferentialAction.Restrict);
                 });
 
             migrationBuilder.CreateIndex(
-                name: "IX_Effectiveness_PokeTypeId",
+                name: "idx_fk_poke_type_x_poke_effective",
                 table: "Effectiveness",
                 column: "PokeTypeId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Moves_PokeTypeId",
+                name: "idx_fk_poke_type_x_poke_move",
                 table: "Moves",
                 column: "PokeTypeId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_PokemonMove_PokeMoveId",
+                name: "idx_fk_poke_move_x_poke_pokemon_move",
                 table: "PokemonMove",
                 column: "PokeMoveId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_PokemonMove_PokePokemonId",
+                name: "idx_fk_poke_pokemon_x_poke_pokemon_move",
                 table: "PokemonMove",
                 column: "PokePokemonId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Pokemons_PokeItemId",
+                name: "idx_fk_poke_item_x_poke_pokemon",
                 table: "Pokemons",
                 column: "PokeItemId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Pokemons_PokePrimaryTypeId",
+                name: "idx_fk_poke_primary_type_x_poke_pokemon",
                 table: "Pokemons",
                 column: "PokePrimaryTypeId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Pokemons_PokeSecondaryTypeId",
+                name: "idx_fk_poke_secondary_type_x_poke_pokemon",
                 table: "Pokemons",
                 column: "PokeSecondaryTypeId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Weakness_PokeTypeId",
+                name: "idx_fk_poke_type_x_poke_weakness",
                 table: "Weakness",
                 column: "PokeTypeId");
         }

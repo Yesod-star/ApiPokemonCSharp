@@ -15,7 +15,18 @@ public class PokePokemonMoveMap : IEntityTypeConfiguration<PokePokemonMove>
         builder.Property(x => x.PokeMoveId).IsRequired();
         builder.Property(x => x.PokePokemonId).IsRequired();
 
-        builder.HasOne(x => x.PokeMove);
-        builder.HasOne(x => x.PokePokemon);
+        builder.HasOne(d => d.PokeMove)
+        .WithMany(p => p.PokePokemonMoveList)
+        .HasForeignKey(d => d.PokeMoveId)
+        .HasConstraintName("fk_poke_move_x_poke_pokemon_move")
+        .OnDelete(DeleteBehavior.Restrict);
+        builder.HasIndex(c => c.PokeMoveId, "idx_fk_poke_move_x_poke_pokemon_move");
+
+        builder.HasOne(d => d.PokePokemon)
+        .WithMany(p => p.PokePokemonMoveList)
+        .HasForeignKey(d => d.PokePokemonId)
+        .HasConstraintName("fk_poke_pokemon_x_poke_pokemon_move")
+        .OnDelete(DeleteBehavior.Restrict);
+        builder.HasIndex(c => c.PokePokemonId, "idx_fk_poke_pokemon_x_poke_pokemon_move");
     }
 }

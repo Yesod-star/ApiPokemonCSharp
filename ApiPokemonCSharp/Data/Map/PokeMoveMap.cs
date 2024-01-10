@@ -22,6 +22,11 @@ public class PokeMoveMap : IEntityTypeConfiguration<PokeMove>
         builder.Property(x => x.AttributeBuff);
         builder.Property(x => x.PokeTypeId);
 
-        builder.HasOne(x => x.PokeType);
+        builder.HasOne(d => d.PokeType)
+         .WithMany(p => p.PokeMoveList)
+         .HasForeignKey(d => d.PokeTypeId)
+         .HasConstraintName("fk_poke_type_x_poke_move")
+         .OnDelete(DeleteBehavior.Restrict);
+        builder.HasIndex(c => c.PokeTypeId, "idx_fk_poke_type_x_poke_move");
     }
 }

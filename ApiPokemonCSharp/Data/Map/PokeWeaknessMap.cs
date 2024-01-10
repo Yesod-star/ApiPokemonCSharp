@@ -15,6 +15,11 @@ public class PokeWeaknessMap : IEntityTypeConfiguration<PokeWeakness>
         builder.Property(x => x.PokeTypeId).IsRequired();
         builder.Property(x => x.Multiplier).IsRequired();
 
-        builder.HasOne(x => x.PokeType);
+        builder.HasOne(d => d.PokeType)
+         .WithMany(p => p.PokeWeaknessList)
+         .HasForeignKey(d => d.PokeTypeId)
+         .HasConstraintName("fk_poke_type_x_poke_weakness")
+         .OnDelete(DeleteBehavior.Restrict);
+        builder.HasIndex(c => c.PokeTypeId, "idx_fk_poke_type_x_poke_weakness");
     }
 }

@@ -15,6 +15,11 @@ public class PokeEffectiveMap : IEntityTypeConfiguration<PokeEffective>
         builder.Property(x => x.Multiplier).IsRequired();
         builder.Property(x => x.PokeTypeId).IsRequired();
 
-        builder.HasOne(x => x.PokeType);
+        builder.HasOne(d => d.PokeType)
+         .WithMany(p => p.PokeEffectiveList)
+         .HasForeignKey(d => d.PokeTypeId)
+         .HasConstraintName("fk_poke_type_x_poke_effective")
+         .OnDelete(DeleteBehavior.Restrict);
+        builder.HasIndex(c => c.PokeTypeId, "idx_fk_poke_type_x_poke_effective");
     }
 }

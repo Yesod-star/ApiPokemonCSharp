@@ -22,11 +22,26 @@ namespace ApiPokemonCSharp.Data.Map
             builder.Property(x => x.PokePrimaryTypeId).IsRequired();
             builder.Property(x => x.PokeSecondaryTypeId);
 
-            builder.HasOne(x => x.PokeItem);
+            builder.HasOne(d => d.PokeItem)
+            .WithMany(p => p.PokeList)
+            .HasForeignKey(d => d.PokeItemId)
+            .HasConstraintName("fk_poke_item_x_poke_pokemon")
+            .OnDelete(DeleteBehavior.Restrict);
+            builder.HasIndex(c => c.PokeItemId, "idx_fk_poke_item_x_poke_pokemon");
 
-            builder.HasOne(x => x.PokePrimaryType);
+            builder.HasOne(d => d.PokePrimaryType)
+            .WithMany(p => p.PokePrimaryList)
+            .HasForeignKey(d => d.PokePrimaryTypeId)
+            .HasConstraintName("fk_poke_primary_type_x_poke_pokemon")
+            .OnDelete(DeleteBehavior.Restrict);
+            builder.HasIndex(c => c.PokePrimaryTypeId, "idx_fk_poke_primary_type_x_poke_pokemon");
 
-            builder.HasOne(x => x.PokeSecondaryType);
+            builder.HasOne(d => d.PokeSecondaryType)
+            .WithMany(p => p.PokeSecondaryList)
+            .HasForeignKey(d => d.PokeSecondaryTypeId)
+            .HasConstraintName("fk_poke_secondary_type_x_poke_pokemon")
+            .OnDelete(DeleteBehavior.Restrict);
+            builder.HasIndex(c => c.PokeSecondaryTypeId, "idx_fk_poke_secondary_type_x_poke_pokemon");
         }
     }
 }

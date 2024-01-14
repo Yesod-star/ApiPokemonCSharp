@@ -66,10 +66,10 @@ public class PokePokemonController : ControllerBase
 		return Ok(PokeMoves);
 	}
 
-	[HttpGet("{id}")]
-	public async Task<ActionResult<List<PokePokemon>>> ShowAllDetailPokemon(int id)
-	{
-		List<PokePokemon> PokeMoves = await _pokePokemonRepositorio.ShowAllDetailPokemon(id);
-		return Ok(PokeMoves);
-	}
+    [HttpGet("Pokemon/{id}")]
+    public async Task<ActionResult<List<PokePokemon>>> ShowAllDetailPokemon(int id)
+    {
+        List<PokePokemon> PokeMoves = await _pokePokemonRepositorio.ShowAllDetailPokemon(id);
+        return Ok(PokeMoves);
+    }
 }

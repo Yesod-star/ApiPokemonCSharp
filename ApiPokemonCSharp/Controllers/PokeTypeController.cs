@@ -52,17 +52,17 @@ public class PokeTypeController : ControllerBase
         return Ok(apagado);
     }
 
-	[HttpGet("{type}")]
-	public async Task<ActionResult<List<PokeType>>> ShowAllWeaknessByType(int type)
-	{
-		List<PokeType> PokeTypes = await _pokeTypeRepositorio.ShowAllWeaknessByType(type);
-		return Ok(PokeTypes);
-	}
+    [HttpGet("Weakness/{type}")]
+    public async Task<ActionResult<List<PokeType>>> ShowAllWeaknessByType(int type)
+    {
+        List<PokeType> PokeTypes = await _pokeTypeRepositorio.ShowAllWeaknessByType(type);
+        return Ok(PokeTypes);
+    }
 
-	[HttpGet("{type}")]
-	public async Task<ActionResult<List<PokeType>>> ShowAllEffectivenessByType(int type)
-	{
-		List<PokeType> PokeTypes = await _pokeTypeRepositorio.ShowAllEffectivenessByType(type);
-		return Ok(PokeTypes);
-	}
+    [HttpGet("Effectiveness/{type}")]
+    public async Task<ActionResult<List<PokeType>>> ShowAllEffectivenessByType(int type)
+    {
+        List<PokeType> PokeTypes = await _pokeTypeRepositorio.ShowAllEffectivenessByType(type);
+        return Ok(PokeTypes);
+    }
 }

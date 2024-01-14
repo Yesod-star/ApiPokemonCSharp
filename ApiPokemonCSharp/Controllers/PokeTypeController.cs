@@ -1,6 +1,7 @@
 ﻿using ApiPokemonCSharp.Models;
 using ApiPokemonCSharp.Repositorios.Repositorios;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 
 namespace ApiPokemonCSharp.Controllers;
 
@@ -50,4 +51,18 @@ public class PokeTypeController : ControllerBase
         bool apagado = await _pokeTypeRepositorio.RemoveItem(id);
         return Ok(apagado);
     }
+
+	[HttpGet("{type}")]
+	public async Task<ActionResult<List<PokeType>>> ShowAllWeaknessByType(int type)
+	{
+		List<PokeType> PokeTypes = await _pokeTypeRepositorio.ShowAllWeaknessByType(type);
+		return Ok(PokeTypes);
+	}
+
+	[HttpGet("{type}")]
+	public async Task<ActionResult<List<PokeType>>> ShowAllEffectivenessByType(int type)
+	{
+		List<PokeType> PokeTypes = await _pokeTypeRepositorio.ShowAllEffectivenessByType(type);
+		return Ok(PokeTypes);
+	}
 }

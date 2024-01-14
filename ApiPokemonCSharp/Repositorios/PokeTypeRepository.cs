@@ -67,5 +67,21 @@ public class PokeTypeRepository : IPokeTypeRepository
     {
         return await _dbContext.Types.ToListAsync();
     }
+
+	public async Task<List<PokeType>> ShowAllWeaknessByType(int type)
+	{
+		return await _dbContext.Types
+				.Include(a => a.PokeWeaknessList)
+				.ThenInclude(b => b.PokeType)
+				.ToListAsync();
+	}
+
+	public async Task<List<PokeType>> ShowAllEffectivenessByType(int type)
+	{
+        return await _dbContext.Types
+                .Include(a => a.PokeEffectiveList)
+                .ThenInclude(b => b.PokeType)
+                .ToListAsync();
+	}
 }
 

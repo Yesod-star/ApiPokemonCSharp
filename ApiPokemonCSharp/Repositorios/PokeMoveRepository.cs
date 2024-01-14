@@ -77,4 +77,19 @@ public class PokeMoveRepository : IPokeMoveRepository
     {
         return await _dbContext.Moves.ToListAsync();
     }
+
+	public async Task<List<PokeMove>> ShowAllMoveByType(int type)
+	{
+		return await _dbContext.Moves
+				.Where(x => x.PokeTypeId == type)
+				.ToListAsync();
+	}
+
+	public async Task<List<PokeMove>> ShowAllMoveByPokemon(int pokemon)
+	{
+		return await _dbContext.Moves
+				.Include(a => a.PokePokemonMoveList)
+			    .Where(x => x.PokePokemonMoveList.Any(z => z.PokePokemonId == pokemon))
+				.ToListAsync();
+	}
 }

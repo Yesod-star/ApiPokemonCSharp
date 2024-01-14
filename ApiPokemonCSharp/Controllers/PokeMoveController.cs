@@ -1,6 +1,8 @@
 ﻿using ApiPokemonCSharp.Models;
 using ApiPokemonCSharp.Repositorios.Repositorios;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
+using System.Collections.Generic;
 
 namespace ApiPokemonCSharp.Controllers;
 
@@ -50,4 +52,18 @@ public class PokeMoveController : ControllerBase
         bool apagado = await _pokeMoveRepositorio.RemoveItem(id);
         return Ok(apagado);
     }
+
+	[HttpGet("{type}")]
+	public async Task<ActionResult<List<PokeMove>>> ShowAllMoveByType(int type)
+	{
+		List <PokeMove> PokeMoves = await _pokeMoveRepositorio.ShowAllMoveByType(type);
+        return Ok(PokeMoves);
+	}
+
+	[HttpGet("{pokemon}")]
+	public async Task<ActionResult<List<PokeMove>>> ShowAllMoveByPokemon(int pokemon)
+	{
+		List<PokeMove> PokeMoves = await _pokeMoveRepositorio.ShowAllMoveByPokemon(pokemon);
+		return Ok(PokeMoves);
+	}
 }
